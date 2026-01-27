@@ -1,0 +1,77 @@
+{
+  "startroom": "entrance",
+  "roooms": [{
+    "name": "entrance",
+    "exits": {"west": null,"north": "corridor","east": null,"south": null},
+    "hasfire": false,
+    "NPCS": [],
+    "items": []
+  },{
+    "name": "corridor",
+    "exits": {"west":null,"north":"room full of spiders" ,"east": "room with campfire","south": "entrance"},
+    "hasfire": false,
+    "NPCS": [],
+    "items": []
+  },{
+    "name": "room full of spiders",
+    "exits": {"west":null,"north": null,"east":"room with mole" ,"south":"corridor" },
+    "hasfire": false,
+    "NPCS": [],
+    "items": [{
+      "name": "spider"
+    },{
+      "name": "string from webs"
+    }
+    ]
+  },{
+    "name": "room with mole",
+    "exits": {"west":"room full of spiders","north": null,"east":"room with dead adventurer" ,"south":"room full of rocks" },
+    "hasfire": false,
+    "NPCS": [{
+      "name": "mole",
+      "hasquest": true
+    }
+    ],
+    "items": []
+  },{
+    "name": "room with dead adventurer",
+    "exits": {"west":"room with mole","north": null,"east":null ,"south":"room with campfire" },
+    "hasfire": false,
+    "NPCS": [],
+    "items": [{
+      "name": "charcoal"
+    }
+    ]
+  },{
+    "name": "room with campfire",
+    "exits": {"west":"corridor","north": "room with dead adventurer","east":null ,"south":"room with big lake" },
+    "hasfire": true,
+    "NPCS": [],
+    "items": []
+  },{
+    "name": "room with big lake",
+    "exits": {"west":"room full of rocks","north": "room with campfire","east":null ,"south":null },
+    "hasfire": false,
+    "NPCS": [{
+      "name": "frog",
+      "hasquest": false
+    }],
+    "items": [{
+      "name": "fish"
+    },{
+      "name": "fish"
+    },{
+      "name": "frog"
+    }]
+  },{
+    "name": "room full of rocks",
+    "exits": {"west":null,"north": "room with mole","east":"room with big lake" ,"south":null },
+    "hasfire": false,
+    "NPCS": [],
+    "items": [{
+      "name": "rock bowl"
+    }]
+  }
+
+  ]
+}
