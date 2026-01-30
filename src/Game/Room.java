@@ -1,17 +1,62 @@
 package Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Room {
-
     private String name;
-    private Map<String, Room> exits;
+    private Map<String, Room> exits = new HashMap<>();
     ArrayList<Item> items = new ArrayList<>();
     ArrayList<Npc> npcs = new ArrayList<>();
     private boolean hasFire;
 
-    public void addItem(Item i){}
+    public Room(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isHasFire() {
+        return hasFire;
+    }
+
+    public void setHasFire(boolean hasFire) {
+        this.hasFire = hasFire;
+    }
+
+    public void addExit(String dirction,Room r){
+        exits.put(dirction,r);
+    }
+
+    public void getExit(String direction){
+        exits.get(direction);
+    }
+
+    public Map<String,Room> getExits(){
+        return exits;
+    }
+
+    public void addItem(Item i){
+    items.add(i);
+    }
+
+    public ArrayList<Item> getItems(){
+        return items;
+    }
     public void removeItem(Item i){}
-    public void addNpc(Npc n){}
+
+    public void addNpc(Npc n){
+        npcs.add(n);
+    }
+
+    public ArrayList<Npc> getNpcs() {
+        return npcs;
+    }
 }
