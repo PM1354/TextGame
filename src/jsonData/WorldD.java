@@ -5,55 +5,68 @@ import Game.Npc;
 import Game.Item;
 import Game.Room;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class WorldD {
-
-
     public RoomD[] rooms;
+    public String startroom;
     public static World takeData(){
         try {
-
             ObjectMapper om = new ObjectMapper();
-            WorldD wd = om.readValue(new File("resources/character.json"), WorldD.class);
-            Map<String, Room> rooms = new HashMap<>();
+            java.io.InputStream is = WorldD.class.getClassLoader().getResourceAsStream("characters.json");
+            if (is == null) {
+                System.out.println("Soubor nebyl nalezen");
+                return null;
+            }
+            WorldD wd = om.readValue(is, WorldD.class);
+            if (wd.rooms == null || wd.rooms.length == 0) {
+                return null;
+            }
+            Map<String, Room> roomsMap = new HashMap<>();
             for (RoomD r : wd.rooms) {
                 Room room = new Room(r.name);
                 room.setHasFire(r.hasfire);
-                rooms.put(r.name, room);
+                roomsMap.put(r.name, room);
             }
             for (RoomD r : wd.rooms) {
-                Room room = rooms.get(r.name);
-
-                for (String dir : r.exits.keySet()) {
-                    String target = r.exits.get(dir);
-                    if (target != null) {
-                        room.addExit(dir, rooms.get(target));
+                Room room = roomsMap.get(r.name);
+                if (r.exits != null) {
+                    for (Map.Entry<String, String> entry : r.exits.entrySet()) {
+                        String dir = entry.getKey();
+                        String target = entry.getValue();
+                        if (target != null && roomsMap.containsKey(target)) {
+                            room.addExit(dir, roomsMap.get(target));
+                        }
                     }
                 }
             }
             for (RoomD r : wd.rooms) {
-                Room room = rooms.get(r.name);
-
-                for (ItemD i : r.items) {
-                    room.addItem(new Item(i.name));
+                Room room = roomsMap.get(r.name);
+                if (r.items != null) {
+                    for (ItemD i : r.items) {
+                        room.addItem(new Item(i.name));
+                    }
                 }
-
-                for (NpcD n : r.NPCS) {
-                    room.addNpc(new Npc(n.name, n.hasquest));
+            }
+            for (RoomD r : wd.rooms) {
+                Room room = roomsMap.get(r.name);
+                if (r.NPCS != null) {
+                    for (NpcD n : r.NPCS) {
+                        room.addNpc(new Npc(n.name, n.hasquest));
+                    }
                 }
             }
             World world = new World();
-            world.setRoomMap(rooms);
-            System.out.println(world);
+            world.setRoomMap(roomsMap);
+            System.out.println("World nacten");
             return world;
-
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
+
     }
 
 
