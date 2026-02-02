@@ -35,8 +35,8 @@ public class Room {
         exits.put(dirction,r);
     }
 
-    public void getExit(String direction){
-        exits.get(direction);
+    public Room getExit(String direction){
+        return exits.get(direction);
     }
 
     public Map<String,Room> getExits(){

@@ -56,13 +56,7 @@
       "name": "frog",
       "hasquest": false
     }],
-    "items": [{
-      "name": "fish"
-    },{
-      "name": "fish"
-    },{
-      "name": "frog"
-    }]
+    "items": []
   },{
     "name": "room full of rocks",
     "exits": {"west":null,"north": "room with mole","east":"room with big lake" ,"south":null },

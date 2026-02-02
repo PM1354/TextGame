@@ -6,6 +6,6 @@ public class Inventory implements CommandExecute{
 
     @Override
     public void execute() {
-
+        System.out.println(player.getInventory());
     }
 }

@@ -6,6 +6,6 @@ public class Talk implements CommandExecute{
 
     @Override
     public void execute() {
-
+    player.talk();
     }
 }

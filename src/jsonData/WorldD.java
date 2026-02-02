@@ -59,8 +59,12 @@ public class WorldD {
                 }
             }
             World world = new World();
+            if (wd.startroom != null && roomsMap.containsKey(wd.startroom)) {
+                world.setStartRoom(roomsMap.get(wd.startroom));
+            }
             world.setRoomMap(roomsMap);
             System.out.println("World nacten");
+            System.out.println(world.getStartRoom());
             return world;
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,6 @@ public class Sleep implements CommandExecute{
 
     @Override
     public void execute() {
-
+        player.sleep(player.getCurrent());
     }
 }
