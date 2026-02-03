@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    private int day;
+    private int day = 0;
     private boolean alive = true;
     private Room current;
     private Quests quests;
