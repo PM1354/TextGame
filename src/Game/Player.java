@@ -117,7 +117,6 @@ public class Player {
                 System.out.println("this item doesnt exist or u dont have it in inventory");
             }
         }
-
     }
     public void drink(){
         System.out.println("what item would u like to drink");
@@ -128,6 +127,7 @@ public class Player {
                 if (i.isDrinkable()) {
                     quests.setDrankToday(true);
                     inventory.remove(i);
+                    inventory.add(new Item("rock bowl",false,true));
                 }else {
                     System.out.println("this item isnt drinkable");
                 }
@@ -286,5 +286,86 @@ public class Player {
         }
     }
 
+    public void use() {
+        System.out.println("jaky item chces pouzit?");
+        String itemName = scr.nextLine().toLowerCase();
+        Item usedItem = null;
+        for (Item i : inventory) {
+            if (i.getName().toLowerCase().equals(itemName)) {
+                usedItem = i;
+                break;
+            }
+        }
+        if (usedItem == null) {
+            System.out.println("takovy item nemas");
+            return;
+        }
+        if (current.getName().equals("room with big lake")) {
+
+            if (usedItem.getName().equals("trap with bait")) {
+                for (Item i: current.getItems()){
+                    if(i.getName().equals(usedItem.getName())){
+                        current.getItems().remove(i);
+                    }
+                }
+                System.out.println("nastavil jsi past a chytil zabu");
+                inventory.remove(usedItem);
+                Item frog = new Item("frog");
+                inventory.add(frog);
+                return;
+            }
+
+            if (usedItem.getName().equals("fishingrod")) {
+                for (Item i: current.getItems()){
+                    if(i.getName().equals(usedItem.getName())){
+                        current.getItems().remove(i);
+                    }
+                }
+                System.out.println("chytil jsi rybu na prut");
+                Item fish = new Item("fish");
+                inventory.add(fish);
+                inventory.add(fish);
+                inventory.remove(usedItem);
+                return;
+            }
+        }
+        if (current.getName().equals("room with campfire")) {
+
+            if (usedItem.getName().equals("charcoal")) {
+                System.out.println("rozdelal jsi ohen a muzes varit");
+                inventory.remove(usedItem);
+                return;
+            }
+
+            if (usedItem.getName().equals("fish")) {
+                System.out.println("uvaril jsi rybu");
+                inventory.remove(usedItem);
+                Item cookedFish = new Item("cooked fish");
+                cookedFish.setEdible(true);
+                inventory.add(cookedFish);
+                return;
+            }
+            if (usedItem.getName().equals("frog")) {
+                System.out.println("uvaril jsi zabu");
+                inventory.remove(usedItem);
+                Item cookedFrog = new Item("cooked frog");
+                cookedFrog.setEdible(true);
+                inventory.add(cookedFrog);
+                return;
+            }
+        }
+        if (current.getName().equals("corridor")) {
+
+            if (usedItem.getName().equals("rock bowl")) {
+                System.out.println("pozbiral si vodu do misky");
+                inventory.remove(usedItem);
+                Item bowlWW = new Item("bowl with water");
+                bowlWW.setDrinkable(true);
+                inventory.add(bowlWW);
+                return;
+            }
+        }
+        System.out.println("tento item tu nemuzes pouzit");
+    }
 
 }

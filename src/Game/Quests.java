@@ -31,6 +31,6 @@ public class Quests {
 
     @Override
     public String toString() {
-        return "jsi najedeny: " + ateToday + " jsi napity: " + drankToday + " jsi vyspany " + sleptToday;
+        return "jsi najedeny: " + ateToday + " jsi napity: " + drankToday + " jsi vyspany: " + sleptToday;
     }
 }

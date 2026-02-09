@@ -19,14 +19,12 @@ public class Command {
         prikazy.put("take",new Take());//hotovo
         prikazy.put("talk",new Talk());//hotovo
         prikazy.put("time",new Time());//hotovo
-        prikazy.put("use",new Use());
+        prikazy.put("use",new Use());//hotovo
         prikazy.put("eat",new Eat());//hotovo
         prikazy.put("drink",new Drink());//hotovo
     }
 
-    public void proved(){
-        String prikaz = scr.nextLine();
-        prikaz =prikaz.toLowerCase();
+    public void proved(String prikaz){
         if (prikazy.containsKey(prikaz)){
             prikazy.get(prikaz).execute();
         }else{

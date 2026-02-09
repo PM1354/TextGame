@@ -37,4 +37,10 @@ public class Item {
     public void setDrinkable(boolean drinkable) {
         this.drinkable = drinkable;
     }
+
+    public Item(String name, boolean edible, boolean drinkable) {
+        this.name = name;
+        this.edible = edible;
+        this.drinkable = drinkable;
+    }
 }

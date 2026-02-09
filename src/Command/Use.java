@@ -6,6 +6,6 @@ public class Use implements CommandExecute{
 
     @Override
     public void execute() {
-
+    player.use();
     }
 }
