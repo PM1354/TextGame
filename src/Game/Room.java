@@ -62,6 +62,6 @@ public class Room {
 
     @Override
     public String toString() {
-        return "you are in " + name ;
+        return "you are in " + name +" there is"+ npcs+ " and there are" + items;
     }
 }
