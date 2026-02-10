@@ -11,15 +11,17 @@ public class GameLoop {
     public void loop(){
         World world = WorldD.takeData();
         Player player = new Player();
+        Quests q = new Quests();
+        player.setQuests(q);
         player.setCurrent(world.getStartRoom());
+        Command cmd = new Command(player);
+        cmd.vytvorMapu();
         while(!end){
             if (player.getDay()==3){
                 end = true;
             }
             String prikaz = scr.nextLine();
             prikaz =prikaz.toLowerCase();
-            Command cmd = new Command();
-            cmd.vytvorMapu();
             cmd.proved(prikaz);
         }
         System.out.println("winner");

@@ -2,7 +2,11 @@ package Command;
 import Game.Player;
 
 public class Inventory implements CommandExecute{
-    private Player player;
+    private final Player player;
+
+    public Inventory(Player player) {
+        this.player = player;
+    }
 
     @Override
     public void execute() {

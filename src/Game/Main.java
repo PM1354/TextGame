@@ -3,6 +3,7 @@ import jsonData.WorldD;
 
 public class Main {
     public static void main(String[] args) {
-        WorldD.takeData();
+        GameLoop gl = new GameLoop();
+        gl.loop();
     }
 }

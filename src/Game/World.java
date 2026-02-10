@@ -25,4 +25,6 @@ public class World {
     public void setRoomMap(Map<String, Room> roomMap) {
         this.roomMap = roomMap;
     }
+
+
 }

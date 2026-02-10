@@ -1,5 +1,7 @@
 package Command;
 
+import Game.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -7,21 +9,26 @@ import java.util.Scanner;
 public class Command {
     Map<String,CommandExecute> prikazy = new HashMap();
     Scanner scr = new Scanner(System.in);
+    private final Player player;
+
+    public Command(Player player) {
+        this.player = player;
+    }
 
     public void vytvorMapu(){
-        prikazy.put("move",new Move());//hotovo
-        prikazy.put("clue",new Clue());//hotovo
-        prikazy.put("combine", new Combine());//hotovo
-        prikazy.put("help",new Help());//hotovo
-        prikazy.put("inventory",new Inventory());//hotovo
-        prikazy.put("sleep",new Sleep());//hotovo
-        prikazy.put("store",new Store());//hotovo
-        prikazy.put("take",new Take());//hotovo
-        prikazy.put("talk",new Talk());//hotovo
-        prikazy.put("time",new Time());//hotovo
-        prikazy.put("use",new Use());//hotovo
-        prikazy.put("eat",new Eat());//hotovo
-        prikazy.put("drink",new Drink());//hotovo
+        prikazy.put("move",new Move(player));
+        prikazy.put("clue",new Clue());
+        prikazy.put("combine", new Combine(player));
+        prikazy.put("help",new Help(player));
+        prikazy.put("inventory",new Inventory(player));
+        prikazy.put("sleep",new Sleep(player));
+        prikazy.put("store",new Store(player));
+        prikazy.put("take",new Take(player));
+        prikazy.put("talk",new Talk(player));
+        prikazy.put("time",new Time(player));
+        prikazy.put("use",new Use(player));
+        prikazy.put("eat",new Eat(player));
+        prikazy.put("drink",new Drink(player));
     }
 
     public void proved(String prikaz){

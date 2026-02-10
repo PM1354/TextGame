@@ -59,4 +59,9 @@ public class Room {
     public ArrayList<Npc> getNpcs() {
         return npcs;
     }
+
+    @Override
+    public String toString() {
+        return "you are in " + name ;
+    }
 }

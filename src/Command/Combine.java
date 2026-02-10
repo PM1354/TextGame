@@ -2,7 +2,11 @@ package Command;
 import Game.Player;
 
 public class Combine implements CommandExecute{
-    private Player player;
+    private final Player player;
+
+    public Combine(Player player) {
+        this.player = player;
+    }
 
 
     @Override
