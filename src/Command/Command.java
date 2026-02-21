@@ -15,6 +15,9 @@ public class Command {
         this.player = player;
     }
 
+    /**
+     * vytvoří mapu příkazů
+     */
     public void vytvorMapu(){
         prikazy.put("move",new Move(player));
         prikazy.put("clue",new Clue());
@@ -31,6 +34,10 @@ public class Command {
         prikazy.put("drink",new Drink(player));
     }
 
+    /**
+     * provede jednotlivý příkaz z mapy příkazů
+     * @param prikaz - parametr který zadává hráč
+     */
     public void proved(String prikaz){
         if (prikazy.containsKey(prikaz)){
             prikazy.get(prikaz).execute();

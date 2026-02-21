@@ -12,6 +12,11 @@ import java.util.Map;
 public class WorldD {
     public RoomD[] rooms;
     public String startroom;
+
+    /**
+     * načte svět jsonu a vrátí ho
+     * @return - vrací svět
+     */
     public static World takeData(){
         try {
             ObjectMapper om = new ObjectMapper();
@@ -63,8 +68,7 @@ public class WorldD {
                 world.setStartRoom(roomsMap.get(wd.startroom));
             }
             world.setRoomMap(roomsMap);
-            System.out.println("World nacten");
-            System.out.println(world.getStartRoom());
+            System.out.println("World loaded");
             return world;
         } catch (Exception e) {
             e.printStackTrace();

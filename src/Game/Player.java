@@ -53,199 +53,233 @@ public class Player {
         this.quests = quests;
     }
 
-    public void move(){
+    /**
+     * posune hráče do další místnosti podle směru který zadá
+     */
+    public void move() {
         System.out.println("in what direction would u like to move (west, north, east, south)");
         String direction = scr.nextLine();
         direction = direction.toLowerCase();
-        if(direction.equals("east")||direction.equals("west")||direction.equals("south")||direction.equals("north")){
-            if (direction.equals("north")){
-                if(current.getExit("north") == null){
-                    System.out.println("zadna mistnost tu neni");
-                }else {
+        if (direction.equals("east") || direction.equals("west") || direction.equals("south") || direction.equals("north")) {
+            if (direction.equals("north")) {
+                if (current.getExit("north") == null) {
+                    System.out.println("there is no room here");
+                } else {
                     current = current.getExit("north");
                 }
             }
-            if (direction.equals("east")){
-                if(current.getExit("east") == null){
-                    System.out.println("zadna mistnost tu neni");
-                }else {
+            if (direction.equals("east")) {
+                if (current.getExit("east") == null) {
+                    System.out.println("there is no room here");
+                } else {
                     current = current.getExit("east");
                 }
             }
-            if (direction.equals("west")){
-                if(current.getExit("west") == null){
-                    System.out.println("zadna mistnost tu neni");
-                }else {
+            if (direction.equals("west")) {
+                if (current.getExit("west") == null) {
+                    System.out.println("there is no room here");
+                } else {
                     current = current.getExit("west");
                 }
             }
-            if (direction.equals("south")){
-                if(current.getExit("south") == null){
-                    System.out.println("zadna mistnost tu neni");
-                }else {
+            if (direction.equals("south")) {
+                if (current.getExit("south") == null) {
+                    System.out.println("there is no room here");
+                } else {
                     current = current.getExit("south");
                 }
             }
-        }else {
+        } else {
             System.out.println("no such direction exists");
         }
     }
-    public void sleep(Room current){
-        if (!quests.isAteToday() || !quests.isDrankToday()){
+
+    /**
+     * jestli je hráč ve správné místnosti tak se vyspí, přejde na další den a resetují se mu questy
+     *
+     * @param current - room ve kterém hráč právě je
+     */
+    public void sleep(Room current) {
+        if (!quests.isAteToday() || !quests.isDrankToday()) {
             alive = false;
         }
-        if (current.getName().equals("room with campfire")){
+        if (current.getName().equals("room with campfire")) {
             day++;
-            System.out.println("novy den je tu vsechny questy se ti vyresetovaly");
+            System.out.println("a new day is here, all your quests have been reset");
             quests.setDrankToday(false);
             quests.setAteToday(false);
+        } else {
+            System.out.println("you are not in the safe room to sleep");
         }
     }
-    public void eat(){
+
+    /**
+     * jestli je item který hráč napíše poživatelný (edible), tak se nají a splní se mu jeden z questů
+     */
+    public void eat() {
         System.out.println("what item would u like to eat?");
         String itemName = scr.nextLine();
         itemName = itemName.toLowerCase();
-        for (Item i : inventory){
-            if (i.getName().equals(itemName)){
+        for (Item i : inventory) {
+            if (i.getName().equals(itemName)) {
                 if (i.isEdible()) {
                     quests.setAteToday(true);
                     inventory.remove(i);
-                }else {
+                } else {
                     System.out.println("this item isnt edible");
                 }
-            }else {
+            } else {
                 System.out.println("this item doesnt exist or u dont have it in inventory");
             }
         }
     }
-    public void drink(){
+
+    /**
+     * pokud je item pitelný (drinkable) tak se hráč napije a splí se mu jeden quest
+     */
+    public void drink() {
         System.out.println("what item would u like to drink");
         String itemName = scr.nextLine();
         itemName = itemName.toLowerCase();
-        for (Item i : inventory){
-            if (i.getName().equals(itemName)){
+        for (Item i : inventory) {
+            if (i.getName().equals(itemName)) {
                 if (i.isDrinkable()) {
                     quests.setDrankToday(true);
                     inventory.remove(i);
-                    inventory.add(new Item("rock bowl",false,true));
-                }else {
+                    inventory.add(new Item("rock bowl", false, true));
+                } else {
                     System.out.println("this item isnt drinkable");
                 }
-            }else {
+            } else {
                 System.out.println("this item doesnt exist or u dont have it in inventory");
             }
         }
     }
-    public void store(){
-        if(current.getName().equals("room with campfire")){
-            System.out.println("muzes si tu ulozit 2 veci");
-            System.out.println("jaky item sem chces ulozit (napis cislo podel poradi v inventari)");
+
+    /**
+     * když je hráč v místnosti s ohněm tak si tam může uložit 2 věci
+     */
+    public void store() {
+        System.out.println(inventory);
+        if (current.getName().equals("room with campfire")) {
+            System.out.println("you can store 2 things here");
+            System.out.println("which item do you want to store here (type the number according to inventory order)");
             int prikaz = scr.nextInt();
-            if(current.getItems().size() ==2){
-                System.out.println("uz sem nemuzes nic dat");
-            }else{
-                if(prikaz == 1){
+            if (current.getItems().size() == 2) {
+                System.out.println("you cannot put anything else here");
+            } else {
+                if (prikaz == 1) {
                     Item item = inventory.remove(0);
                     current.getItems().add(item);
                 }
-                if(prikaz == 2){
+                if (prikaz == 2) {
                     Item item = inventory.remove(1);
                     current.getItems().add(item);
                 }
-                if(prikaz == 3){
+                if (prikaz == 3) {
                     Item item = inventory.remove(2);
                     current.getItems().add(item);
                 }
-                if(prikaz == 4){
+                if (prikaz == 4) {
                     Item item = inventory.remove(3);
                     current.getItems().add(item);
                 }
-                if(prikaz == 5){
+                if (prikaz == 5) {
                     Item item = inventory.remove(4);
                     current.getItems().add(item);
                 }
-                if (prikaz>5||prikaz<1){
-                    System.out.println("zadne takove cislo v tvem i nventari neni");
+                if (prikaz > 5 || prikaz < 1) {
+                    System.out.println("no such number exists in your inventory");
                 }
             }
 
-        }else{
-            System.out.println("jsi ve spatne mistnosti");
+        } else {
+            System.out.println("you are in the wrong room");
         }
     }
-    public void take (){
-        System.out.println("jaky predmet chcete odnest (napiste cislo podle vypsani itemu v mistnosti) ");
+
+    /**
+     * hráč si z místnosti může vzít předmět který tam je
+     */
+    public void take() {
+        System.out.println(inventory);
+        System.out.println("which item do you want to take (type the number according to the item list in the room) ");
         int prikaz = scr.nextInt();
-        if (inventory.size()<5) {
+        if (inventory.size() < 5) {
 
             if (prikaz == 1) {
                 inventory.add(current.getItems().get(0));
             }
             if (prikaz == 2) {
                 if (current.getItems().size() != 2) {
-                    System.out.println("zadny item na tomto miste tu neni");
+                    System.out.println("there is no item at this position");
                 } else {
                     inventory.add(current.getItems().get(1));
                 }
             }
             if (prikaz > 2 || prikaz < 1) {
-                System.out.println("zadny item na tomto miste tu neni");
+                System.out.println("there is no item at this position");
             }
-        }else {
-            System.out.println("vic toho nepoberes");
+        } else {
+            System.out.println("you can't carry any more");
         }
     }
-    public void combine(){
-        if (inventory.size() <2){
-            System.out.println("z 1 itemu nic neudelas");
+
+    /**
+     * hráč může kombinovat 2 předměty aby získal jeden užitečnější
+     */
+    public void combine() {
+        System.out.println(inventory);
+        if (inventory.size() < 2) {
+            System.out.println("you can't make anything out of 1 item");
         }
         Item i1 = new Item(" ");
         Item i2 = new Item(" ");
-        System.out.println("jake 2 itemy chces zkombinovat");
+        System.out.println("which 2 items do you want to combine?");
         String item1 = scr.nextLine();
         String item2 = scr.nextLine();
         item1 = item1.toLowerCase();
         item2 = item2.toLowerCase();
-        if (item1.equals("spider")&&item2.equals("rock bowl")){
-            for (Item i : inventory){
-                if(i.getName().equals("spider")){
+        if (item1.equals("spider") && item2.equals("rock bowl")) {
+            for (Item i : inventory) {
+                if (i.getName().equals("spider")) {
                     i1 = i;
                 }
-                if (i.getName().equals("rock bowl")){
+                if (i.getName().equals("rock bowl")) {
                     i2 = i;
                 }
             }
-            if(i1.getName().equals(" ")||i2.getName().equals(" ")){
-                System.out.println("you dont have that items");
-            }else{
-                for (Item i : inventory){
-                    if (i.getName().equals("spider")){
+            if (i1.getName().equals(" ") || i2.getName().equals(" ")) {
+                System.out.println("you dont have those items");
+            } else {
+                for (Item i : inventory) {
+                    if (i.getName().equals("spider")) {
                         inventory.remove(i);
                     }
-                    if (i.getName().equals("rock bowl")){
+                    if (i.getName().equals("rock bowl")) {
                         inventory.remove(i);
                     }
                 }
                 inventory.add(new Item("trap with bait"));
             }
         }
-        if (item1.equals("stick")&&item2.equals("string")){
-            for (Item i : inventory){
-                if(i.getName().equals("stick")){
+        if (item1.equals("stick") && item2.equals("string")) {
+            for (Item i : inventory) {
+                if (i.getName().equals("stick")) {
                     i1 = i;
                 }
-                if (i.getName().equals("string")){
+                if (i.getName().equals("string")) {
                     i2 = i;
                 }
             }
-            if(i1.getName().equals(" ")||i2.getName().equals(" ")){
-                System.out.println("you dont have that items");
-            }else{
-                for (Item i : inventory){
-                    if (i.getName().equals("stick")){
+            if (i1.getName().equals(" ") || i2.getName().equals(" ")) {
+                System.out.println("you dont have those items");
+            } else {
+                for (Item i : inventory) {
+                    if (i.getName().equals("stick")) {
                         inventory.remove(i);
                     }
-                    if (i.getName().equals("string")){
+                    if (i.getName().equals("string")) {
                         inventory.remove(i);
                     }
                 }
@@ -253,41 +287,53 @@ public class Player {
             }
         }
     }
-    public void time(){
-        if(current.getName().equals("entrance")){
-            System.out.println("je "+day+" den");
-        }else{
-            System.out.println("jsi ve spatne mistnosti");
+
+    /**
+     * hráč si u vchodu u jeskně může podívat na čas
+     */
+    public void time() {
+        if (current.getName().equals("entrance")) {
+            System.out.println("it is day " + day);
+        } else {
+            System.out.println("you are in the wrong room");
         }
     }
-    public void talk(){
-        if (current.getNpcs() == null){
-            System.out.println("neni tu nikdo");
-        }else {
+
+    /**
+     * hráč si může povidat s npcs ktere jsou v mistnosti
+     */
+    public void talk() {
+        if (current.getNpcs() == null) {
+            System.out.println("no one is here");
+        } else {
             for (Npc n : current.getNpcs()) {
                 if (n.getName().equals("frog")) {
-                    System.out.println("kvak... kvak");
+                    System.out.println("ribbit... ribbit");
                 }
-                if (n.getName().equals("mole")){
-                    if (n.isHasQuest()){
-                        System.out.println("Nemotora skoro slepý, hlína se mu na nos lepí.Pracuje i v neděli, razí v zemi tunely.Kdo je to?");
+                if (n.getName().equals("mole")) {
+                    if (n.isHasQuest()) {
+                        System.out.println("Clumsy and almost blind, dirt sticks to his nose. He works even on Sundays, boring tunnels in the ground. Who is it?");
                         String odpoved = scr.nextLine();
-                        if (odpoved.equals("krtek")){
-                            inventory.add(new Item("klacek"));
-                            System.out.println("spravne, na tu mas klacek");
-                        }else {
-                            System.out.println("spatne");
+                        if (odpoved.equals("mole") || odpoved.equals("krtek")) {
+                            inventory.add(new Item("stick"));
+                            System.out.println("correct, here is a stick for you");
+                        } else {
+                            System.out.println("incorrect");
                         }
                     }
-                }else {
-                    System.out.println("krtek s tebou nechce mluvit protoze si mu sebral oblibeny klacek");
+                } else {
+                    System.out.println("the mole doesn't want to talk to you because you took his favorite stick");
                 }
             }
         }
     }
 
+    /**
+     * hráč podle toho v jake mistnosti je tak může použít předmět aby  něco získal
+     */
     public void use() {
-        System.out.println("jaky item chces pouzit?");
+        System.out.println(inventory);
+        System.out.println("which item do you want to use?");
         String itemName = scr.nextLine().toLowerCase();
         Item usedItem = null;
         for (Item i : inventory) {
@@ -297,18 +343,18 @@ public class Player {
             }
         }
         if (usedItem == null) {
-            System.out.println("takovy item nemas");
+            System.out.println("you don't have such an item");
             return;
         }
         if (current.getName().equals("room with big lake")) {
 
             if (usedItem.getName().equals("trap with bait")) {
-                for (Item i: current.getItems()){
-                    if(i.getName().equals(usedItem.getName())){
+                for (Item i : current.getItems()) {
+                    if (i.getName().equals(usedItem.getName())) {
                         current.getItems().remove(i);
                     }
                 }
-                System.out.println("nastavil jsi past a chytil zabu");
+                System.out.println("you set the trap and caught a frog");
                 inventory.remove(usedItem);
                 Item frog = new Item("frog");
                 inventory.add(frog);
@@ -316,12 +362,12 @@ public class Player {
             }
 
             if (usedItem.getName().equals("fishingrod")) {
-                for (Item i: current.getItems()){
-                    if(i.getName().equals(usedItem.getName())){
+                for (Item i : current.getItems()) {
+                    if (i.getName().equals(usedItem.getName())) {
                         current.getItems().remove(i);
                     }
                 }
-                System.out.println("chytil jsi rybu na prut");
+                System.out.println("you caught fish with the rod");
                 Item fish = new Item("fish");
                 inventory.add(fish);
                 inventory.add(fish);
@@ -332,13 +378,13 @@ public class Player {
         if (current.getName().equals("room with campfire")) {
 
             if (usedItem.getName().equals("charcoal")) {
-                System.out.println("rozdelal jsi ohen a muzes varit");
+                System.out.println("you started a fire and can now cook");
                 inventory.remove(usedItem);
                 return;
             }
 
             if (usedItem.getName().equals("fish")) {
-                System.out.println("uvaril jsi rybu");
+                System.out.println("you cooked the fish");
                 inventory.remove(usedItem);
                 Item cookedFish = new Item("cooked fish");
                 cookedFish.setEdible(true);
@@ -346,7 +392,7 @@ public class Player {
                 return;
             }
             if (usedItem.getName().equals("frog")) {
-                System.out.println("uvaril jsi zabu");
+                System.out.println("you cooked the frog");
                 inventory.remove(usedItem);
                 Item cookedFrog = new Item("cooked frog");
                 cookedFrog.setEdible(true);
@@ -357,7 +403,7 @@ public class Player {
         if (current.getName().equals("corridor")) {
 
             if (usedItem.getName().equals("rock bowl")) {
-                System.out.println("pozbiral si vodu do misky");
+                System.out.println("you collected water into the bowl");
                 inventory.remove(usedItem);
                 Item bowlWW = new Item("bowl with water");
                 bowlWW.setDrinkable(true);
@@ -365,7 +411,6 @@ public class Player {
                 return;
             }
         }
-        System.out.println("tento item tu nemuzes pouzit");
+        System.out.println("you cannot use this item here");
     }
-
 }
