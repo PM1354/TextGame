@@ -19,6 +19,7 @@ public class GameLoop {
         player.setCurrent(world.getStartRoom());
         Command cmd = new Command(player);
         cmd.vytvorMapu();
+        System.out.println("-----------------------------------------------------------------------------------------------");
         System.out.println("You are a world-renowned treasure hunter named Jeremy Kennedy.");
         System.out.println("You embark on various expeditions and bring back legendary lost artifacts.");
         System.out.println("These artifacts come from times when humanity could not read or write.");
