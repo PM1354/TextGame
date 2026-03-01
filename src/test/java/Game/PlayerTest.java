@@ -6,16 +6,18 @@ import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * třída na testy
+ */
 class PlayerTest {
     private Player hrac = new Player();
-    private Quests quests = new Quests();
 
     void simulateInput(String input) {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         hrac.scr = new java.util.Scanner(System.in);
     }
     @Test
-    void testSleep_UmrtiHladyNeboZizni() {
+    void testSleepUmrtiHladyNeboZizni() {
         Quests quests = new Quests();
         Player hrac = new Player();
         hrac.setQuests(quests);
@@ -27,7 +29,7 @@ class PlayerTest {
         assertFalse(hrac.isAlive(), "Hráč by měl být po spánku mrtvý, pokud nejedl/nepil.");
     }
     @Test
-    void testMoveNorthSuccess() {
+    void testMoveNorth() {
         Room start = new Room("start");
         Room northRoom = new Room("north room");
         start.addExit("north", northRoom);
@@ -37,13 +39,13 @@ class PlayerTest {
         assertEquals(northRoom, hrac.getCurrent(), "Hráč by se měl přesunout do severní místnosti.");
     }
     @Test
-    void testTime_SpatnaLokalita() {
+    void testTimeSpatnaLokalita() {
         Room wrongRoom = new Room("forest");
         hrac.setCurrent(wrongRoom);
         assertDoesNotThrow(() -> hrac.time());
     }
     @Test
-    void testTake_PlnyInventar_NepridaItem() {
+    void TakePlnyInventar() {
         simulateInput("1\n");
         Room room = new Room("forest");
         Item item = new Item("stick");
@@ -56,7 +58,7 @@ class PlayerTest {
         assertFalse(hrac.getInventory().contains(item));
     }
     @Test
-    void testTake_PridaItemDoInventare() {
+    void testTakePridaItem() {
         simulateInput("1\n");
         Room room = new Room("forest");
         Item item = new Item("stick");
@@ -66,7 +68,7 @@ class PlayerTest {
         assertTrue(hrac.getInventory().contains(item));
     }
     @Test
-    void testTalk_Frog_NehodiVyjimku() {
+    void testTalkFrog() {
         Room room = new Room("forest");
         Npc frog = new Npc("frog",false);
         room.addNpc(frog);
@@ -74,7 +76,7 @@ class PlayerTest {
         assertDoesNotThrow(() -> hrac.talk());
     }
     @Test
-    void testTalk_ZadnyNpc_NehodiVyjimku() {
+    void testTalkZadnyNpcu() {
         Room room = new Room("forest");
         hrac.setCurrent(room);
         assertDoesNotThrow(() -> hrac.talk());

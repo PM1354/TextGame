@@ -120,17 +120,22 @@ public class Player {
         System.out.println("what item would u like to eat?");
         String itemName = scr.nextLine();
         itemName = itemName.toLowerCase();
+        Item toRemove = null;
         for (Item i : inventory) {
             if (i.getName().equals(itemName)) {
                 if (i.isEdible()) {
                     quests.setAteToday(true);
-                    inventory.remove(i);
+                    toRemove = i;
                 } else {
                     System.out.println("this item isnt edible");
                 }
-            } else {
-                System.out.println("this item doesnt exist or u dont have it in inventory");
+                break;
             }
+        }
+        if (toRemove != null) {
+            inventory.remove(toRemove);
+        } else if (!quests.isAteToday()) {
+            System.out.println("this item doesnt exist or u dont have it in inventory");
         }
     }
 
@@ -141,18 +146,23 @@ public class Player {
         System.out.println("what item would u like to drink");
         String itemName = scr.nextLine();
         itemName = itemName.toLowerCase();
+        Item toRemove = null;
         for (Item i : inventory) {
             if (i.getName().equals(itemName)) {
                 if (i.isDrinkable()) {
                     quests.setDrankToday(true);
-                    inventory.remove(i);
-                    inventory.add(new Item("rock bowl", false, true));
+                    toRemove = i;
                 } else {
                     System.out.println("this item isnt drinkable");
                 }
-            } else {
-                System.out.println("this item doesnt exist or u dont have it in inventory");
+                break;
             }
+        }
+        if (toRemove != null) {
+            inventory.remove(toRemove);
+            inventory.add(new Item("rock bowl", false, true));
+        } else if (!quests.isDrankToday()) {
+            System.out.println("this item doesnt exist or u dont have it in inventory");
         }
     }
 
@@ -161,41 +171,28 @@ public class Player {
      */
     public void store() {
         System.out.println(inventory);
-        if (current.getName().equals("room with campfire")) {
-            System.out.println("you can store 2 things here");
-            System.out.println("which item do you want to store here (type the number according to inventory order)");
-            int prikaz = scr.nextInt();
-            if (current.getItems().size() == 2) {
-                System.out.println("you cannot put anything else here");
-            } else {
-                if (prikaz == 1) {
-                    Item item = inventory.remove(0);
-                    current.getItems().add(item);
-                }
-                if (prikaz == 2) {
-                    Item item = inventory.remove(1);
-                    current.getItems().add(item);
-                }
-                if (prikaz == 3) {
-                    Item item = inventory.remove(2);
-                    current.getItems().add(item);
-                }
-                if (prikaz == 4) {
-                    Item item = inventory.remove(3);
-                    current.getItems().add(item);
-                }
-                if (prikaz == 5) {
-                    Item item = inventory.remove(4);
-                    current.getItems().add(item);
-                }
-                if (prikaz > 5 || prikaz < 1) {
-                    System.out.println("no such number exists in your inventory");
-                }
-            }
-
-        } else {
+        if (!current.getName().equals("room with campfire")) {
             System.out.println("you are in the wrong room");
+            return;
         }
+
+        if (current.getItems().size() >= 2) {
+            System.out.println("you cannot put anything else here");
+            return;
+        }
+
+        System.out.println("you can store 2 things here");
+        System.out.println("which item do you want to store here (type the number according to inventory order)");
+        int prikaz = scr.nextInt();
+        scr.nextLine();
+
+        if (prikaz < 1 || prikaz > inventory.size()) {
+            System.out.println("no such number exists in your inventory");
+            return;
+        }
+
+        Item item = inventory.remove(prikaz - 1);
+        current.getItems().add(item);
     }
 
     /**
@@ -203,26 +200,26 @@ public class Player {
      */
     public void take() {
         System.out.println(inventory);
-        System.out.println("which item do you want to take (type the number according to the item list in the room) ");
-        int prikaz = scr.nextInt();
-        if (inventory.size() < 5) {
-
-            if (prikaz == 1) {
-                inventory.add(current.getItems().get(0));
-            }
-            if (prikaz == 2) {
-                if (current.getItems().size() != 2) {
-                    System.out.println("there is no item at this position");
-                } else {
-                    inventory.add(current.getItems().get(1));
-                }
-            }
-            if (prikaz > 2 || prikaz < 1) {
-                System.out.println("there is no item at this position");
-            }
-        } else {
-            System.out.println("you can't carry any more");
+        if (current.getItems().isEmpty()) {
+            System.out.println("there are no items in this room");
+            return;
         }
+
+        System.out.println("which item do you want to take (type the number according to the item list in the room)");
+        int prikaz = scr.nextInt();
+        scr.nextLine();
+
+        if (inventory.size() >= 5) {
+            System.out.println("you can't carry any more");
+            return;
+        }
+
+        if (prikaz < 1 || prikaz > current.getItems().size()) {
+            System.out.println("there is no item at this position");
+            return;
+        }
+
+        inventory.add(current.getItems().remove(prikaz - 1));
     }
 
     /**
@@ -232,60 +229,45 @@ public class Player {
         System.out.println(inventory);
         if (inventory.size() < 2) {
             System.out.println("you can't make anything out of 1 item");
+            return;
         }
-        Item i1 = new Item(" ");
-        Item i2 = new Item(" ");
+
         System.out.println("which 2 items do you want to combine?");
-        String item1 = scr.nextLine();
-        String item2 = scr.nextLine();
-        item1 = item1.toLowerCase();
-        item2 = item2.toLowerCase();
-        if (item1.equals("spider") && item2.equals("rock bowl")) {
-            for (Item i : inventory) {
-                if (i.getName().equals("spider")) {
-                    i1 = i;
-                }
-                if (i.getName().equals("rock bowl")) {
-                    i2 = i;
-                }
-            }
-            if (i1.getName().equals(" ") || i2.getName().equals(" ")) {
-                System.out.println("you dont have those items");
-            } else {
-                for (Item i : inventory) {
-                    if (i.getName().equals("spider")) {
-                        inventory.remove(i);
-                    }
-                    if (i.getName().equals("rock bowl")) {
-                        inventory.remove(i);
-                    }
-                }
-                inventory.add(new Item("trap with bait"));
-            }
+        String item1 = scr.nextLine().toLowerCase();
+        String item2 = scr.nextLine().toLowerCase();
+
+        Item i1 = null;
+        Item i2 = null;
+
+        for (Item i : inventory) {
+            if (i.getName().equals(item1)) i1 = i;
+            if (i.getName().equals(item2)) i2 = i;
         }
-        if (item1.equals("stick") && item2.equals("string")) {
-            for (Item i : inventory) {
-                if (i.getName().equals("stick")) {
-                    i1 = i;
-                }
-                if (i.getName().equals("string")) {
-                    i2 = i;
-                }
-            }
-            if (i1.getName().equals(" ") || i2.getName().equals(" ")) {
-                System.out.println("you dont have those items");
-            } else {
-                for (Item i : inventory) {
-                    if (i.getName().equals("stick")) {
-                        inventory.remove(i);
-                    }
-                    if (i.getName().equals("string")) {
-                        inventory.remove(i);
-                    }
-                }
-                inventory.add(new Item("fishingrod"));
-            }
+
+        if (i1 == null || i2 == null) {
+            System.out.println("you dont have those items");
+            return;
         }
+
+        if ((item1.equals("spider") && item2.equals("rock bowl")) ||
+                (item1.equals("rock bowl") && item2.equals("spider"))) {
+            inventory.remove(i1);
+            inventory.remove(i2);
+            inventory.add(new Item("trap with bait"));
+            System.out.println("you created a trap with bait");
+            return;
+        }
+
+        if ((item1.equals("stick") && item2.equals("string")) ||
+                (item1.equals("string") && item2.equals("stick"))) {
+            inventory.remove(i1);
+            inventory.remove(i2);
+            inventory.add(new Item("fishingrod"));
+            System.out.println("you created a fishingrod");
+            return;
+        }
+
+        System.out.println("these items cannot be combined");
     }
 
     /**
